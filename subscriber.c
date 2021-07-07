@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "MQTTAsync.h"
+#include<semaphore.h>
+#include<pthread.h>
+#include <sys/mman.h>
+#include<fcntl.h>
+//#include "MQTTClient.h"
  
 #if !defined(_WIN32)
 #include <unistd.h>
@@ -13,17 +18,32 @@
 #include <OsWrapper.h>
 #endif
  
-#define ADDRESS     "tcp://mqtt.eclipse.org:1883"
+#define ADDRESS     "tcp://broker.hivemq.com:1883"
 #define CLIENTID    "ExampleClientSub"
-#define TOPIC       "MQTT Examples"
-#define PAYLOAD     "Hello World!"
+//#define TOPIC       "MQTT Examples"
+//#define PAYLOAD     "Hello World!"
 #define QOS         1
 #define TIMEOUT     10000L
  
 int disc_finished = 0;
 int subscribed = 0;
 int finished = 0;
- 
+int msgg_arrived = 0;
+sem_t *ps,*qs;
+const char* TOPIC = NULL;
+// typedef enum topic_name 
+// {
+//     first,
+//     second,
+//     third
+// }topic_name;
+
+// topic_name TOPIC;
+
+const char* topic1 = "first";
+const char* topic2 = "second";
+const char* topic3 = "third";
+
 void connlost(void *context, char *cause)
 {
         MQTTAsync client = (MQTTAsync)context;
@@ -52,6 +72,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *me
     printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
     MQTTAsync_freeMessage(&message);
     MQTTAsync_free(topicName);
+    msgg_arrived=1;
     return 1;
 }
  
@@ -95,8 +116,8 @@ void onConnect(void* context, MQTTAsync_successData* response)
  
         printf("Successful connection\n");
  
-        printf("Subscribing to topic %s\nfor client %s using QoS%d\n\n"
-           "Press Q<Enter> to quit\n\n", TOPIC, CLIENTID, QOS);
+        printf("Subscribing to topic \nfor client %s using QoS%d\n\n"
+           "Press Q<Enter> to quit\n\n", CLIENTID, QOS);
         opts.onSuccess = onSubscribe;
         opts.onFailure = onSubscribeFailure;
         opts.context = client;
@@ -108,7 +129,7 @@ void onConnect(void* context, MQTTAsync_successData* response)
 }
  
  
-int main(int argc, char* argv[])
+int make_client()
 {
         MQTTAsync client;
         MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
@@ -131,7 +152,7 @@ int main(int argc, char* argv[])
                 goto destroy_exit;
         }
  
-        conn_opts.keepAliveInterval = 20;
+        conn_opts.keepAliveInterval = 5;
         conn_opts.cleansession = 1;
         conn_opts.onSuccess = onConnect;
         conn_opts.onFailure = onConnectFailure;
@@ -152,11 +173,12 @@ int main(int argc, char* argv[])
  
         if (finished)
                 goto exit;
- 
+        
+        printf("%d", msgg_arrived);
         do
         {
                 ch = getchar();
-        } while (ch!='Q' && ch != 'q');
+        } while ((ch!='Q' && ch != 'q') && !(msgg_arrived));
  
         disc_opts.onSuccess = onDisconnect;
         disc_opts.onFailure = onDisconnectFailure;
@@ -179,4 +201,55 @@ destroy_exit:
         MQTTAsync_destroy(&client);
 exit:
         return rc;
+}
+
+void* first_sub(void*pv)
+{
+        TOPIC="HUMID";
+        make_client();
+        sem_post(ps);
+}
+void* second_sub(void*pv)
+{       
+        sem_wait(ps);
+        TOPIC="TEMP1";
+        disc_finished = 0;
+        subscribed = 0;
+        finished = 0;
+        msgg_arrived=0;
+        make_client();
+        sem_post(qs);
+        sem_post(ps);
+}
+void* third_sub(void*pv)
+{       
+        sem_wait(ps);
+        sem_wait(qs);
+        disc_finished = 0;
+        subscribed = 0;
+        finished = 0;
+        msgg_arrived=0;
+        TOPIC = "MOIST";
+        make_client();
+}
+
+int main(int argc, char* argv[])
+{
+    sem_unlink("s1");
+    sem_unlink("s2");
+        ps=sem_open("/s1",O_CREAT, 0666, 0);
+        qs=sem_open("/s2",O_CREAT, 0666, 0);
+
+        pthread_t pt1, pt2, pt3; //thread handle
+
+    pthread_create(&pt1, NULL, first_sub, NULL);
+    pthread_create(&pt2, NULL, second_sub, NULL);
+    pthread_create(&pt3, NULL, third_sub, NULL);
+	
+    pthread_join(pt1,NULL);
+    pthread_join(pt2,NULL);
+    pthread_join(pt3,NULL);
+    sem_unlink("s1");
+    sem_unlink("s2");
+   
 }
