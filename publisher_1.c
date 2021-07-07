@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "MQTTAsync.h"
+#include <semaphore.h>
+#include <fcntl.h>
  
 #if !defined(_WIN32)
 #include <unistd.h>
@@ -125,6 +127,8 @@ int messageArrived(void* context, char* topicName, int topicLen, MQTTAsync_messa
  
 int main(int argc, char* argv[])
 {
+        sem_t *ps;
+        ps=sem_open("/s1",O_CREAT, 0666, 1);
         MQTTAsync client;
         MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
         int rc;
@@ -148,6 +152,7 @@ int main(int argc, char* argv[])
         conn_opts.context = client;
         if ((rc = MQTTAsync_connect(client, &conn_opts)) != MQTTASYNC_SUCCESS)
         {
+                sem_wait(ps);
                 printf("Failed to start connect, return code %d\n", rc);
                 exit(EXIT_FAILURE);
         }
@@ -161,7 +166,7 @@ int main(int argc, char* argv[])
                 #else
                         usleep(10000L);
                 #endif
- 
+        sem_post(ps);
         MQTTAsync_destroy(&client);
         return rc;
 }
