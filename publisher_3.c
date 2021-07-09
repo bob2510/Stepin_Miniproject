@@ -26,8 +26,6 @@ int finished = 0;
  
 void connlost(void *context, char *cause)
 {
-        sem_t *ps;
-        ps=sem_open("/s1",O_CREAT, 0666, 1);
         MQTTAsync client = (MQTTAsync)context;
         MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
         int rc;
@@ -129,6 +127,8 @@ int messageArrived(void* context, char* topicName, int topicLen, MQTTAsync_messa
  
 int main(int argc, char* argv[])
 {
+        sem_t *ps;
+        ps=sem_open("/s1",O_CREAT, 0666, 1);
         MQTTAsync client;
         MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
         int rc;
