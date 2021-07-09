@@ -6,7 +6,6 @@
 #include<pthread.h>
 #include <sys/mman.h>
 #include<fcntl.h>
-//#include "MQTTClient.h"
  
 #if !defined(_WIN32)
 #include <unistd.h>
@@ -18,6 +17,7 @@
 #include <OsWrapper.h>
 #endif
  
+
 #define ADDRESS     "tcp://broker.hivemq.com:1883"
 #define CLIENTID    "ExampleClientSub"
 //#define TOPIC       "MQTT Examples"
@@ -31,18 +31,10 @@ int finished = 0;
 int msgg_arrived = 0;
 sem_t *ps,*qs;
 const char* TOPIC = NULL;
-// typedef enum topic_name 
-// {
-//     first,
-//     second,
-//     third
-// }topic_name;
 
-// topic_name TOPIC;
-
-const char* topic1 = "first";
-const char* topic2 = "second";
-const char* topic3 = "third";
+const char* topic1 = "TEMP";
+const char* topic2 = "HUMID";
+const char* topic3 = "MOIST";
 
 void connlost(void *context, char *cause)
 {
@@ -174,11 +166,11 @@ int make_client()
         if (finished)
                 goto exit;
         
-        printf("%d", msgg_arrived);
+        
         do
         {
-                ch = getchar();
-        } while ((ch!='Q' && ch != 'q') && !(msgg_arrived));
+                // continue;
+        } while (!(msgg_arrived));
  
         disc_opts.onSuccess = onDisconnect;
         disc_opts.onFailure = onDisconnectFailure;
@@ -205,14 +197,14 @@ exit:
 
 void* first_sub(void*pv)
 {
-        TOPIC="HUMID";
+        TOPIC=topic1;
         make_client();
         sem_post(ps);
 }
 void* second_sub(void*pv)
 {       
         sem_wait(ps);
-        TOPIC="TEMP1";
+        TOPIC=topic2;
         disc_finished = 0;
         subscribed = 0;
         finished = 0;
@@ -229,7 +221,7 @@ void* third_sub(void*pv)
         subscribed = 0;
         finished = 0;
         msgg_arrived=0;
-        TOPIC = "MOIST";
+        TOPIC = topic3;
         make_client();
 }
 

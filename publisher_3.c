@@ -15,7 +15,7 @@
  
 #define ADDRESS     "tcp://broker.hivemq.com:1883"
 #define CLIENTID    "ExampleClientPub"
-#define TOPIC       "HUMID"
+#define TOPIC       "MOIST"
 #define PAYLOAD     "Hello World 3!"
 #define QOS         1
 #define TIMEOUT     10000L
