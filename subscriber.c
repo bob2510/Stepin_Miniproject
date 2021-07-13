@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "MQTTAsync.h"
-#include<semaphore.h>
-#include<pthread.h>
+#include <semaphore.h>
+#include <pthread.h>
 #include <sys/mman.h>
-#include<fcntl.h>
+#include <fcntl.h>
+#include <string.h>
  
 #if !defined(_WIN32)
 #include <unistd.h>
@@ -29,6 +30,9 @@ int disc_finished = 0;
 int subscribed = 0;
 int finished = 0;
 int msgg_arrived = 0;
+int noofdata = 10;  
+int fileptr;
+int terminator=0;
 sem_t *ps,*qs;
 const char* TOPIC = NULL;
 
@@ -59,12 +63,19 @@ void connlost(void *context, char *cause)
  
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message)
 {
-    printf("Message arrived\n");
-    printf("     topic: %s\n", topicName);
-    printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
+//     printf("Message arrived\n");
+//     printf("     topic: %s\n", topicName);
+//     printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
+    write(fileptr, message->payload,message->payloadlen);
+    if(strcmp("END", message->payload) == 0)
+    {
+            msgg_arrived=1;
+            terminator=1;
+    }
     MQTTAsync_freeMessage(&message);
     MQTTAsync_free(topicName);
-    msgg_arrived=1;
+    
+//     msgg_arrived=1;
     return 1;
 }
  
@@ -108,8 +119,8 @@ void onConnect(void* context, MQTTAsync_successData* response)
  
         printf("Successful connection\n");
  
-        printf("Subscribing to topic \nfor client %s using QoS%d\n\n"
-           "Press Q<Enter> to quit\n\n", CLIENTID, QOS);
+        // printf("Subscribing to topic \nfor client %s using QoS%d\n\n"
+        //    "Press Q<Enter> to quit\n\n", CLIENTID, QOS);
         opts.onSuccess = onSubscribe;
         opts.onFailure = onSubscribeFailure;
         opts.context = client;
@@ -196,20 +207,33 @@ exit:
 }
 
 void* first_sub(void*pv)
-{
-        TOPIC=topic1;
-        make_client();
-        sem_post(ps);
+{       
+        int fptr = open("t1.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
+        fileptr=fptr;
+        while(!terminator)
+        {       TOPIC=topic1;
+                make_client();
+        }
+                printf("here\n");
+                close(fptr);
+                sem_post(ps);
 }
 void* second_sub(void*pv)
 {       
         sem_wait(ps);
+        int fptr = open("t2.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
+        fileptr=fptr;
+        terminator=0;
         TOPIC=topic2;
-        disc_finished = 0;
-        subscribed = 0;
-        finished = 0;
-        msgg_arrived=0;
-        make_client();
+        while(!terminator)
+           {    
+                disc_finished = 0;
+                subscribed = 0;
+                finished = 0;
+                msgg_arrived=0;
+                make_client();
+           }    
+        close(fptr);
         sem_post(qs);
         sem_post(ps);
 }
@@ -217,16 +241,24 @@ void* third_sub(void*pv)
 {       
         sem_wait(ps);
         sem_wait(qs);
-        disc_finished = 0;
-        subscribed = 0;
-        finished = 0;
-        msgg_arrived=0;
+        int fptr = open("t3.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
+        fileptr=fptr;
+        terminator=0;
         TOPIC = topic3;
-        make_client();
+        while(!terminator)
+        {
+                disc_finished = 0;
+                subscribed = 0;
+                finished = 0;
+                msgg_arrived=0;
+                make_client();
+        }
+        close(fptr);
 }
 
 int main(int argc, char* argv[])
 {
+      
     sem_unlink("s1");
     sem_unlink("s2");
         ps=sem_open("/s1",O_CREAT, 0666, 0);
@@ -234,14 +266,17 @@ int main(int argc, char* argv[])
 
         pthread_t pt1, pt2, pt3; //thread handle
 
-    pthread_create(&pt1, NULL, first_sub, NULL);
-    pthread_create(&pt2, NULL, second_sub, NULL);
-    pthread_create(&pt3, NULL, third_sub, NULL);
+    
+        pthread_create(&pt1, NULL, first_sub, NULL);
+        pthread_create(&pt2, NULL, second_sub, NULL);
+        pthread_create(&pt3, NULL, third_sub, NULL);
 	
-    pthread_join(pt1,NULL);
-    pthread_join(pt2,NULL);
-    pthread_join(pt3,NULL);
+        pthread_join(pt1,NULL);
+        pthread_join(pt2,NULL);
+        pthread_join(pt3,NULL);
+   
     sem_unlink("s1");
     sem_unlink("s2");
+    return 0;
    
 }
