@@ -32,7 +32,7 @@ int msgg_arrived = 0;
 sem_t *ps,*qs;
 const char* TOPIC = NULL;
 
-const char* topic1 = "TEMP";
+const char* topic1 = "TEMP1";
 const char* topic2 = "HUMID";
 const char* topic3 = "MOIST";
 

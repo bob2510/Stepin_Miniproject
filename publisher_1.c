@@ -17,7 +17,7 @@
  
 #define ADDRESS     "tcp://broker.hivemq.com:1883"
 #define CLIENTID    "ExampleClientPub"
-#define TOPIC       "TEMP"
+#define TOPIC       "TEMP1"
 #define PAYLOAD     "Hello World!"
 #define QOS         1
 #define TIMEOUT     10000L
@@ -132,8 +132,8 @@ int main(int argc, char* argv[])
 
         MQTTAsync client;
         MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
-        MQTTClient_message pubmsg = MQTTClient_message_initializer;
-        MQTTClient_deliveryToken token;
+        MQTTAsync_message pubmsg = MQTTAsync_message_initializer;
+        MQTTAsync_deliveryToken token;
         int rc;
  
         if ((rc = MQTTAsync_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
@@ -163,25 +163,6 @@ int main(int argc, char* argv[])
         printf("Waiting for publication of %s\n"
          "on topic %s for client with ClientID: %s\n",
          PAYLOAD, TOPIC, CLIENTID);
-         for (int i = 0; i < 10; i++)
-        {
-                memset(Data, 0, 100);
-                strcat(Data, PAYLOAD);
-                strcat(Data, asctime(timeinfo));
-
-        //    pubmsg.payload = PAYLOAD;
-        //    pubmsg.payloadlen = strlen(PAYLOAD);
-                pubmsg.payload = Data;
-                pubmsg.payloadlen = strlen(Data);
-                pubmsg.qos = QOS;
-                pubmsg.retained = 0;
-
-                MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
-                rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
-
-        printf("Message with delivery token %d delivered\n", token);
-        sleep(1);
-    } 
         while (!finished)
                 #if defined(_WIN32)
                         Sleep(100);
