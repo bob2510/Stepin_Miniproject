@@ -13,7 +13,7 @@
 #define CLIENTID "PC2"
 #define TOPIC "HUMID"
 #define END "END"
-#define PAYLOAD "Device - HB : Client 2!"
+#define PAYLOAD "Aadreesh : Client 2!"
 #define QOS 1
 #define TIMEOUT 10000L
 
@@ -47,13 +47,13 @@ int main(int argc, char *argv[])
     sleep(5);
     for (int i = 0; i < 10; i++)
     {
-        
+        char loop[20];    
         time(&rawtime);
         timeinfo = localtime(&rawtime);
 
         memset(Data, 0, 100);
         strcat(Data, PAYLOAD);
-        sprintf(loop, "loop %d", i);
+        sprintf(loop, "loop %d\n", i);
         strcat(Data, loop);
         //    pubmsg.payload = PAYLOAD;
         //    pubmsg.payloadlen = strlen(PAYLOAD);
