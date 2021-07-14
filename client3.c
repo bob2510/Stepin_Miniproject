@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         printf("Failed to connect, return code %d\n", rc);
         exit(-1);
     }
-    sem_post(qs);
+    sem_wait(qs);
     sleep(5);
     for (int i = 0; i < 10; i++)
     {
