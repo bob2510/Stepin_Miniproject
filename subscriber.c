@@ -7,6 +7,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <string.h>
+#include "AES/aes.h"
  
 #if !defined(_WIN32)
 #include <unistd.h>
@@ -257,9 +258,9 @@ void* third_sub(void*pv)
 
 int main(int argc, char* argv[])
 {
-      
-    sem_unlink("s1");
-    sem_unlink("s2");
+        void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
+        sem_unlink("s1");
+        sem_unlink("s2");
         ps=sem_open("/s1",O_CREAT, 0666, 0);
         qs=sem_open("/s2",O_CREAT, 0666, 0);
 
@@ -267,12 +268,12 @@ int main(int argc, char* argv[])
 
     
         pthread_create(&pt1, NULL, first_sub, NULL);
-        pthread_create(&pt2, NULL, second_sub, NULL);
-        pthread_create(&pt3, NULL, third_sub, NULL);
+        // pthread_create(&pt2, NULL, second_sub, NULL);
+        // pthread_create(&pt3, NULL, third_sub, NULL);
 	
         pthread_join(pt1,NULL);
-        pthread_join(pt2,NULL);
-        pthread_join(pt3,NULL);
+        // pthread_join(pt2,NULL);
+        // pthread_join(pt3,NULL);
    
     sem_unlink("s1");
     sem_unlink("s2");
