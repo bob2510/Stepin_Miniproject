@@ -36,7 +36,7 @@ int terminator=0;
 sem_t *ps,*qs;
 const char* TOPIC = NULL;
 
-const char* topic1 = "TEMP1";
+const char* topic1 = "TEMPTEST";
 const char* topic2 = "HUMID";
 const char* topic3 = "MOIST";
 
@@ -214,7 +214,6 @@ void* first_sub(void*pv)
         {       TOPIC=topic1;
                 make_client();
         }
-                printf("here\n");
                 close(fptr);
                 sem_post(ps);
 }
