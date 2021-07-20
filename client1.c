@@ -22,8 +22,10 @@
 
 int main(int argc, char *argv[])
 {  
-    sem_unlink("")
-    ps=sem_open("/s1",O_CREAT, 0666, 1); 
+    sem_unlink("s1");
+    sem_unlink("s2"); 
+    sem_t *ps;
+    ps=sem_open("/s1", O_CREAT|O_RDWR, 0666, 1);
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
@@ -45,6 +47,7 @@ int main(int argc, char *argv[])
 
 
         //AES ENCRYPTION
+    sem_wait(ps);    
     for (int i=0;i<10;i++)
     {
         uint8_t int_buf[17];
@@ -80,12 +83,11 @@ int main(int argc, char *argv[])
     
    pubmsg.payload = END;
    pubmsg.payloadlen = strlen(END);
-   
 
-
-    MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
+   MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
+   MQTTClient_disconnect(client, 10000);
+   sem_post(ps); 
+   MQTTClient_destroy(&client);
 
     return rc;
 }
