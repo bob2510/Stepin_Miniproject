@@ -67,7 +67,7 @@ By installing required senosrs and the system, the features can be relished.
 
 ## SWOT Analysis
 
-![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/860b84933415389c549127603ec9cedba9d89359/SDLC/1_Requirements/SWOT.jpg)
+![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/7100d99b3b5c3bb1fe5d1253afb29a3c92525a4a/SDLC/1_Requirements/SWOT.jpg)
 
 # Detail Requirements
 ## High Level Requirements
