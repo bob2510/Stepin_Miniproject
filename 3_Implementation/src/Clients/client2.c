@@ -13,7 +13,7 @@
 
 #define CTR 1
 #define ADDRESS "tcp://broker.hivemq.com:1883"
-#define CLIENTID "PC1"
+#define CLIENTID "PC2"
 #define TOPIC "HUMID"
 #define END "END"
 #define PAYLOAD "Aadreesh:Client2"
