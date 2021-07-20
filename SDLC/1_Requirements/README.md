@@ -65,6 +65,10 @@ It can be applied to any house having proper infrastructure.
 ### HOW
 By installing required senosrs and the system, the features can be relished.
 
+## SWOT Analysis
+
+![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/860b84933415389c549127603ec9cedba9d89359/SDLC/1_Requirements/SWOT.jpg)
+
 # Detail Requirements
 ## High Level Requirements
 | ID | Description | Status |
@@ -72,12 +76,9 @@ By installing required senosrs and the system, the features can be relished.
 |HR_01| Connection between client and Server| Implemented|
 |HR_02| Synchronisation between Clients | Implemented|
 |HR_03| Advanced Encryption Standard Implementation (128 bit)| Implemented|
-|HR_04|  | Future|
+|HR_04| Installing MQTT in mobile / Laptop to control system from end user | Future|
 
 
-## SWOT Analysis
-
-![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/860b84933415389c549127603ec9cedba9d89359/SDLC/1_Requirements/SWOT.jpg)
 
 
 
