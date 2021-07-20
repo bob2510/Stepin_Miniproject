@@ -63,6 +63,14 @@ It can be applied to any house having proper infrastructure.
 ### HOW
 By installing required senosrs and the system, the features can be relished.
 
+# Detail Requirements
+## High Level Requirements
+| ID | Description | Status |
+|----|------------|---------|
+|HR_01| Connection between client and Server| Implemented|
+|HR_02| Synchronisation between Clients | Implemented|
+|HR_03| Advanced Encryption Standard Implementation (128 bit)| Implemented|
+|HR_04|  | Future|
 
 
 
