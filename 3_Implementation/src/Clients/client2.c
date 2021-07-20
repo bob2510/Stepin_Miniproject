@@ -11,6 +11,8 @@
 #include "aes.h"
 #include <stdint.h>
 
+/*--------------------------------------------Macros---------------------------------*/
+
 #define CTR 1
 #define ADDRESS "tcp://broker.hivemq.com:1883"
 #define CLIENTID "PC2"
@@ -20,12 +22,20 @@
 #define QOS 1
 #define TIMEOUT 10000L
 
+/*--------------------------------------------Main Function--------------------------*/
+
 int main(int argc, char *argv[])
-{  
+{
+
+/*--------------------------------------------Semaphore Initialization---------------*/    
+
     sem_unlink("s2");
     sem_t *ps, *qs;
     ps=sem_open("/s1", O_CREAT|O_RDWR, 0666);
     qs=sem_open("/s2", O_CREAT|O_RDWR, 0666, 0);
+
+/*--------------------------------------------MQTT Initialization---------------*/    
+
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
@@ -37,6 +47,7 @@ int main(int argc, char *argv[])
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
+/*--------------------------------------------MQTT Connect---------------*/
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         printf("Failed to connect, return code %d\n", rc);
@@ -51,13 +62,15 @@ int main(int argc, char *argv[])
     sleep(5);   
     for (int i=0;i<10;i++)
     {
-        uint8_t int_buf[17];
-               
+        uint8_t int_buf[4096];
+
+/*--------------------------------------------AES Encryption------------------*/               
         struct AES_ctx Enc;
         const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
-        uint8_t buf[17] = PAYLOAD;
+        uint8_t buf[4096] = PAYLOAD;
         strcat(buf, "\n");
-        for(int i=0; i<17; i++)
+        int len = strlen(PAYLOAD)+1;
+        for(int i=0; i<len; i++)
         {
             int_buf[i] = (uint8_t)buf[i]; 
         }
@@ -66,12 +79,12 @@ int main(int argc, char *argv[])
         AES_init_ctx_iv(&Enc, key,iv);
  
         //AES_init_ctx(&Enc, key);
-        AES_CTR_xcrypt_buffer(&Enc, int_buf, 17);
+        AES_CTR_xcrypt_buffer(&Enc, int_buf, len);
 
-
+        int len = strlen(PAYLOAD)+1;
 
         pubmsg.payload  = int_buf;
-        pubmsg.payloadlen = 17;
+        pubmsg.payloadlen = len;
         pubmsg.qos = QOS;
         pubmsg.retained = 0;
 
