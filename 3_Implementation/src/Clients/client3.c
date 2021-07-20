@@ -49,13 +49,14 @@ int main(int argc, char *argv[])
     sleep(5);   
     for (int i=0;i<10;i++)
     {
-        uint8_t int_buf[17];
+        uint8_t int_buf[4096];
                
         struct AES_ctx Enc;
         const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
-        uint8_t buf[17] = PAYLOAD;
+        uint8_t buf[4096] = PAYLOAD;
         strcat(buf, "\n");
-        for(int i=0; i<17; i++)
+        int len = strlen(PAYLOAD)+1;
+        for(int i=0; i<len; i++)
         {
             int_buf[i] = (uint8_t)buf[i]; 
         }
@@ -64,12 +65,12 @@ int main(int argc, char *argv[])
         AES_init_ctx_iv(&Enc, key,iv);
  
         //AES_init_ctx(&Enc, key);
-        AES_CTR_xcrypt_buffer(&Enc, int_buf, 17);
-
+        
+        AES_CTR_xcrypt_buffer(&Enc, int_buf, len);
 
 
         pubmsg.payload  = int_buf;
-        pubmsg.payloadlen = 17;
+        pubmsg.payloadlen = len;
         pubmsg.qos = QOS;
         pubmsg.retained = 0;
 

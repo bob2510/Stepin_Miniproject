@@ -16,7 +16,7 @@
 #define CLIENTID "PC1"
 #define TOPIC "TEMPTEST"
 #define END "END"
-#define PAYLOAD "Aadreesh:Client1"
+#define PAYLOAD "Aadreesh:Client Dummy Variables"
 #define QOS 1
 #define TIMEOUT 10000L
 
@@ -50,29 +50,31 @@ int main(int argc, char *argv[])
     sem_wait(ps);    
     for (int i=0;i<10;i++)
     {
-        uint8_t int_buf[17];
+        uint8_t int_buf[4096];
                
         struct AES_ctx Enc;
         const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
-        uint8_t buf[17] = PAYLOAD;
+        uint8_t buf[4096] = PAYLOAD;
         strcat(buf, "\n");
-        for(int i=0; i<17; i++)
+        for(int i=0; i<strlen(PAYLOAD)+1; i++)
         {
             int_buf[i] = (uint8_t)buf[i]; 
         }
         uint8_t iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
 
         AES_init_ctx_iv(&Enc, key,iv);
+        int len = strlen(PAYLOAD)+1;
  
         //AES_init_ctx(&Enc, key);
-        AES_CTR_xcrypt_buffer(&Enc, int_buf, 17);
+        AES_CTR_xcrypt_buffer(&Enc, int_buf, len);
 
 
 
         pubmsg.payload  = int_buf;
-        pubmsg.payloadlen = 17;
+        pubmsg.payloadlen = strlen(PAYLOAD) + 1;
         pubmsg.qos = QOS;
         pubmsg.retained = 0;
+        printf("length: %d", strlen(PAYLOAD));
 
         MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
         //rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
