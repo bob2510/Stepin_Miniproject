@@ -90,6 +90,6 @@ int main(int argc, char *argv[])
    sem_post(qs); 
    MQTTClient_destroy(&client);
 
-    return rc;
+   return rc;
 }
  
