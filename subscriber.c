@@ -8,7 +8,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include "AES/aes.h"
- 
+#include<stdint.h>
+
 #if !defined(_WIN32)
 #include <unistd.h>
 #else
@@ -19,7 +20,7 @@
 #include <OsWrapper.h>
 #endif
  
-
+#define CTR 1
 #define ADDRESS     "tcp://broker.hivemq.com:1883"
 #define CLIENTID    "ExampleClientSub"
 //#define TOPIC       "MQTT Examples"
@@ -40,6 +41,7 @@ const char* TOPIC = NULL;
 const char* topic1 = "TEMPTEST";
 const char* topic2 = "HUMID";
 const char* topic3 = "MOIST";
+
 
 void connlost(void *context, char *cause)
 {
@@ -67,16 +69,40 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *me
 //     printf("Message arrived\n");
 //     printf("     topic: %s\n", topicName);
 //     printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
-    write(fileptr, message->payload,message->payloadlen);
-    if(strcmp("END", message->payload) == 0)
-    {
+        uint8_t  enc_buff [17];
+        char char_buf[17];
+        struct AES_ctx Enc;
+        const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
+        uint8_t iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
+
+        if(strcmp("END", message->payload) == 0)
+        {
             msgg_arrived=1;
             terminator=1;
-    }
-    MQTTAsync_freeMessage(&message);
-    MQTTAsync_free(topicName);
+            return 1;
+        }
+        
+        AES_init_ctx_iv(&Enc, key,iv);
+        memcpy(enc_buff,message->payload, message->payloadlen);
+
+        
+
+        AES_CTR_xcrypt_buffer(&Enc, enc_buff, message->payloadlen);
+        
+        for(int i=0; i<message->payloadlen; i++)
+        {
+            char_buf[i] = (char)enc_buff[i]; 
+        } 
+        
+
+        write(fileptr, char_buf,message->payloadlen);
+        
+
+        MQTTAsync_freeMessage(&message);
+        MQTTAsync_free(topicName);
     
-//     msgg_arrived=1;
+//      msgg_arrived=1;
+//      terminator=1;
     return 1;
 }
  
@@ -257,7 +283,8 @@ void* third_sub(void*pv)
 }
 
 int main(int argc, char* argv[])
-{
+{       
+
         void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
         sem_unlink("s1");
         sem_unlink("s2");
