@@ -61,7 +61,8 @@ It is an 24*7 service.
 ### WHERE
 It can be applied to any house having proper infrastructure. 
 ### HOW
- 
+By installing required senosrs and the system, the features can be relished.
+
 
 
 
