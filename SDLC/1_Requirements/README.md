@@ -28,6 +28,10 @@ We have 4 publishers that connect to the broker at a same time and send data in 
 
 The subscriber recieves data as soon as any publisher publishes the data and so it receives data in the same sequence. After recieving the data, subscriber processes it a bit and then notifies the user after processing.
 
+![System](https://github.com/bob2510/Stepin_Miniproject/blob/db44949635d0a912d830b83c5cd99d0bd0271003/SDLC/2_Architecture/Behavioral_Diagram/Behavioral.jpg)
+
+
+
 
 
 
