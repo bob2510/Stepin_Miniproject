@@ -13,5 +13,16 @@ This project is capable of connecting to multiple clients at a time to the broke
 
 The sequencing is managed by using multi threads and named semaphores in each file.
 
+# Advantages
+
+* Secuered Connection
+* Multi Client System
+* Reduced Data Packet Loss
+* Remote Monitoring
+
+# Defining the System
+
+
+
 
 
