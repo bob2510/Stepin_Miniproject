@@ -33,7 +33,7 @@ Samples are available in the Doxygen docs and also in ``src/samples`` for refere
 
 ### Build instructions for GNU Make
 
-Ensure the OpenSSL development package is installed.
+Ensure the OpenSSL development package is installed. (See @Build requirements if not installed)
 
 First of all, download the client library folder in your system.
 To download the folder, clone the following github repository in your system by following command
@@ -61,7 +61,7 @@ To build the documentation requires doxygen and optionally graphviz.
 make html
 ```
 
-### Build requirements / compilation using CMake
+### Build requirements
 
 The build process currently supports a number of Linux "flavors" including ARM and s390, OS X, AIX and Solaris as well as the Windows operating system. The build process requires the following tools:
   * CMake (http://cmake.org)
