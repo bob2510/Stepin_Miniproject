@@ -64,6 +64,10 @@ It can be applied to any house having proper infrastructure.
 By installing required senosrs and the system, the features can be relished.
 
 
+## SWOT Analysis
+
+![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/860b84933415389c549127603ec9cedba9d89359/SDLC/1_Requirements/SWOT.jpg)
+
 
 
 
