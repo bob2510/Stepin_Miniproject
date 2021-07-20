@@ -1,46 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "MQTTAsync.h"
-#include <semaphore.h>
-#include <pthread.h>
-#include <sys/mman.h>
-#include <fcntl.h>
-#include <string.h>
-#include "aes.h"
-#include<stdint.h>
+#include<stdio.h>
 
-#if !defined(_WIN32)
-#include <unistd.h>
-#else
-#include <windows.h>
+#ifndef SUBSCRIBER_H_
+#define SUBSCRIBER_H_
+#include "subscriber.h"
 #endif
- 
-#if defined(_WRS_KERNEL)
-#include <OsWrapper.h>
-#endif
- 
-#define CTR 1
-#define ADDRESS     "tcp://broker.hivemq.com:1883"
-#define CLIENTID    "ExampleClientSub"
-//#define TOPIC       "MQTT Examples"
-//#define PAYLOAD     "Hello World!"
-#define QOS         1
-#define TIMEOUT     10000L
- 
+
 int disc_finished = 0;
 int subscribed = 0;
 int finished = 0;
 int msgg_arrived = 0;
-int noofdata = 10;  
+// int noofdata = 10;  
 int fileptr;
 int terminator=0;
-sem_t *ps,*qs;
 const char* TOPIC = NULL;
-
 const char* topic1 = "TEMPTEST";
 const char* topic2 = "HUMID";
 const char* topic3 = "MOIST";
+
 
 
 void connlost(void *context, char *cause)
@@ -66,11 +42,8 @@ void connlost(void *context, char *cause)
  
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message)
 {
-//     printf("Message arrived\n");
-//     printf("     topic: %s\n", topicName);
-//     printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
-        uint8_t  enc_buff [17];
-        char char_buf[17];
+        uint8_t  enc_buff [4096];
+        char char_buf[4096];
         struct AES_ctx Enc;
         const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
         uint8_t iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
@@ -100,9 +73,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *me
 
         MQTTAsync_freeMessage(&message);
         MQTTAsync_free(topicName);
-    
-//      msgg_arrived=1;
-//      terminator=1;
     return 1;
 }
  
@@ -233,7 +203,7 @@ exit:
         return rc;
 }
 
-void* first_sub(void*pv)
+void* first_sub()
 {       
         int fptr = open("t1.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         fileptr=fptr;
@@ -242,11 +212,10 @@ void* first_sub(void*pv)
                 make_client();
         }
                 close(fptr);
-                sem_post(ps);
+                
 }
-void* second_sub(void*pv)
+void* second_sub()
 {       
-        sem_wait(ps);
         int fptr = open("t2.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         fileptr=fptr;
         terminator=0;
@@ -260,13 +229,11 @@ void* second_sub(void*pv)
                 make_client();
            }    
         close(fptr);
-        sem_post(qs);
-        sem_post(ps);
+        
 }
-void* third_sub(void*pv)
+void* third_sub()
 {       
-        sem_wait(ps);
-        sem_wait(qs);
+        
         int fptr = open("t3.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         fileptr=fptr;
         terminator=0;
@@ -280,30 +247,4 @@ void* third_sub(void*pv)
                 make_client();
         }
         close(fptr);
-}
-
-int main(int argc, char* argv[])
-{       
-
-        void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
-        sem_unlink("s1");
-        sem_unlink("s2");
-        ps=sem_open("/s1",O_CREAT, 0666, 0);
-        qs=sem_open("/s2",O_CREAT, 0666, 0);
-
-        pthread_t pt1, pt2, pt3; //thread handle
-
-    
-        pthread_create(&pt1, NULL, first_sub, NULL);
-        // pthread_create(&pt2, NULL, second_sub, NULL);
-        // pthread_create(&pt3, NULL, third_sub, NULL);
-	
-        pthread_join(pt1,NULL);
-        // pthread_join(pt2,NULL);
-        // pthread_join(pt3,NULL);
-   
-    sem_unlink("s1");
-    sem_unlink("s2");
-    return 0;
-   
 }
