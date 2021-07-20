@@ -22,6 +22,11 @@ The sequencing is managed by using multi threads and named semaphores in each fi
 
 # Defining the System
 
+Any MQTT system consists of a publisher, broker and a subscriber. Publisher sends data to the broker and subscriber receives the data from the broker. In our case, we have an encrypted multi publisher MQTT system. 
+
+We have 4 publishers that connect to the broker at a same time and send data in a sequence with synchronization. As soon as the first publisher is done publishing, it sends the signal to the second publisher and only then the second publisher publishes the data and then it sends signal to the third publisher and so on.
+
+The subscriber recieves data as soon as any publisher publishes the data and so it receives data in the same sequence. After recieving the data, subscriber processes it a bit and then notifies the user after processing.
 
 
 
