@@ -39,7 +39,7 @@ First of all, download the client library folder in your system.
 To download the folder, clone the following github repository in your system by following command
 
 ```
-git clone https://github.com/kokke/tiny-AES-c.git
+git clone https://github.com/eclipse/paho.mqtt.c.git
 
 ```
 Then from the client library base directory run:
