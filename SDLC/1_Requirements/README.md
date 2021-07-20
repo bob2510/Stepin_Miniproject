@@ -78,9 +78,15 @@ By installing required senosrs and the system, the features can be relished.
 |HR_03| Advanced Encryption Standard Implementation (128 bit)| Implemented|
 |HR_04| Installing MQTT in mobile / Laptop to control system from end user | Future|
 
+## Low Level Requirements
 
-
-
+| ID | Description | Status |
+|----|------------|---------|
+|LR_01| Building and installing MQTT libraries and source code| Implemented|
+|LR_02| Creating connections using MQTT APIs | Implemented|
+|LR_03| AES source code implementaion using 128 bit encryption| Implemented|
+|LR_04| Using named semaphores to internally synchronise the clients | Implemented|
+|LR_05| Storing received data using file handling in the server side | Implemented|
 
 
 
