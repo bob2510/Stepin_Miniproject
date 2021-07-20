@@ -8,7 +8,7 @@ The sequencing is managed by using multi threads and named semaphores.
 ## MQTT Requirements
 
 
-## Libraries
+### Libraries
 
 The Paho C client comprises four variant libraries, shared or static:
 
@@ -31,7 +31,7 @@ Samples are available in the Doxygen docs and also in ``src/samples`` for refere
 - MQTTAsync_publish.c and MQTTAsync_subscribe.c: MQTTAsync simple code examples						
 
 
-## Build instructions for GNU Make
+### Build instructions for GNU Make
 
 Ensure the OpenSSL development package is installed.  Then from the client library base directory run:
 
@@ -52,15 +52,8 @@ To build the documentation requires doxygen and optionally graphviz.
 make html
 ```
 
-The provided GNU Makefile is intended to perform all build steps in the ```build``` directory within the source-tree of Eclipse Paho. Generated binares, libraries, and the documentation can be found in the ```build/output``` directory after completion. 
+## AES Requirements
 
-Options that are passed to the compiler/linker can be specified by typical Unix build variables:
-
-Variable | Description
------------- | -------------
-CC | Path to the C compiler
-CFLAGS | Flags passed to compiler calls
-LDFLAGS | Flags passed to linker calls
 
 
 
