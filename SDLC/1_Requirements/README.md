@@ -50,6 +50,8 @@ As the MQTT broker is capable of connecting to multiple clients, the system is s
 
 It is a developing free of cost open source software.
 
+
+
 ## 4W's and 1H
 
 ### WHO
@@ -62,6 +64,7 @@ It is an 24*7 service.
 It can be applied to any house having proper infrastructure. 
 ### HOW
 By installing required senosrs and the system, the features can be relished.
+
 
 
 ## SWOT Analysis
