@@ -33,5 +33,37 @@ The subscriber recieves data as soon as any publisher publishes the data and so 
 
 
 
+# Features
+
+## Reliability
+
+Reliability is an important aspect in communication system, as faulty or dummy data can create severe problems within the system. Also snooping the data can potentially expose privacy of the user. To ensure reliability
+
+1. AES (Advanced Encryption Standard) algorithm is implemented
+2. 128 bit encryption also boosts the immunity of the system
+3. MQTT(Message Queueing Telemetry Transport) protocol is used which uses TCP protocol internally(takes care of certain level of reliability)
+
+## Scalability
+As the MQTT broker is capable of connecting to multiple clients, the system is scalable upto a certain number, such that the real time data validity does not get affected(Depends on sensor sampling rate).
+
+## Cost
+
+It is a developing free of cost open source software.
+
+## 4W's and 1H
+
+### WHO
+Helpful to every citizen availing remote household facilities.
+### WHAT
+An efficient 128 bit encrypted comunication system capable of offering smart home infrastucture.
+
+### WHEN
+It is an 24*7 service
+###  
+
+
+
+
+
 
 
