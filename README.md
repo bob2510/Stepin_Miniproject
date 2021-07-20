@@ -33,7 +33,16 @@ Samples are available in the Doxygen docs and also in ``src/samples`` for refere
 
 ### Build instructions for GNU Make
 
-Ensure the OpenSSL development package is installed.  Then from the client library base directory run:
+Ensure the OpenSSL development package is installed.
+
+First of all, download the client library folder in your system.
+To download the folder, clone the following github repository in your system by following command
+
+```
+git clone https://github.com/kokke/tiny-AES-c.git
+
+```
+Then from the client library base directory run:
 
 ```
 make
@@ -51,6 +60,39 @@ To build the documentation requires doxygen and optionally graphviz.
 ```
 make html
 ```
+
+### Build requirements / compilation using CMake
+
+The build process currently supports a number of Linux "flavors" including ARM and s390, OS X, AIX and Solaris as well as the Windows operating system. The build process requires the following tools:
+  * CMake (http://cmake.org)
+  * Ninja (https://martine.github.io/ninja/) or
+    GNU Make (https://www.gnu.org/software/make/), and
+  * gcc (https://gcc.gnu.org/).
+
+On Debian based systems this would mean that the following packages have to be installed:
+
+```
+apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui
+```
+
+Also, in order to build a debian package from the source code, the following packages have to be installed
+
+```
+apt-get install fakeroot fakeroot devscripts dh-make lsb-release
+```
+
+Ninja can be downloaded from its github project page in the "releases" section. Optionally it is possible to build binaries with SSL support. This requires the OpenSSL libraries and includes to be available. E. g. on Debian:
+
+```
+apt-get install libssl-dev
+```
+
+The documentation requires doxygen and optionally graphviz:
+
+```
+apt-get install doxygen graphviz
+```
+
 
 ## AES Requirements
 
