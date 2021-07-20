@@ -50,6 +50,8 @@ As the MQTT broker is capable of connecting to multiple clients, the system is s
 
 It is a developing free of cost open source software.
 
+
+
 ## 4W's and 1H
 
 ### WHO
@@ -71,6 +73,11 @@ By installing required senosrs and the system, the features can be relished.
 |HR_02| Synchronisation between Clients | Implemented|
 |HR_03| Advanced Encryption Standard Implementation (128 bit)| Implemented|
 |HR_04|  | Future|
+
+
+## SWOT Analysis
+
+![SWOT Analysis](https://github.com/bob2510/Stepin_Miniproject/blob/860b84933415389c549127603ec9cedba9d89359/SDLC/1_Requirements/SWOT.jpg)
 
 
 
