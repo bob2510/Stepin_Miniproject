@@ -56,10 +56,12 @@ It is a developing free of cost open source software.
 Helpful to every citizen availing remote household facilities.
 ### WHAT
 An efficient 128 bit encrypted comunication system capable of offering smart home infrastucture.
-
 ### WHEN
-It is an 24*7 service
-###  
+It is an 24*7 service.
+### WHERE
+It can be applied to any house having proper infrastructure. 
+### HOW
+ 
 
 
 
