@@ -7,7 +7,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <string.h>
-#include "AES/aes.h"
+#include "aes.h"
 #include<stdint.h>
 
 #if !defined(_WIN32)

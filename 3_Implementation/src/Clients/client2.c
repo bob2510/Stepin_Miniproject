@@ -16,7 +16,7 @@
 #define CLIENTID "PC1"
 #define TOPIC "HUMID"
 #define END "END"
-#define PAYLOAD "Aadreesh:Client1"
+#define PAYLOAD "Aadreesh:Client2"
 #define QOS 1
 #define TIMEOUT 10000L
 
