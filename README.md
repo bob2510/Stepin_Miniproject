@@ -33,7 +33,7 @@ Samples are available in the Doxygen docs and also in ``src/samples`` for refere
 
 ### Build instructions for GNU Make
 
-Ensure the OpenSSL development package is installed. (See @Build requirements if not installed)
+Ensure the OpenSSL development package is installed. (See [Build requirements](https://github.com/bob2510/Stepin_Miniproject/blob/main/README.md#build-instructions-for-gnu-make) if not installed)
 
 First of all, download the client library folder in your system.
 To download the folder, clone the following github repository in your system by following command
