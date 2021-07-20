@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "aes.h": "c"
+        "aes.h": "c",
+        "time.h": "c",
+        "mqttclient.h": "c"
     }
 }
