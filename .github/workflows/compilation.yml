@@ -1,0 +1,20 @@
+name: Compilation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    
+    steps:
+    - name: build_subscriber
+      run:  cd 3_Implementation/src/Subscriber && make
+    - name: build_client
+      run:  cd 3_Implementation/src/Clients && make 
+      
