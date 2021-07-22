@@ -92,7 +92,8 @@ int main(int argc, char *argv[])
    MQTTClient_disconnect(client, 10000);
     
    MQTTClient_destroy(&client);
-
+   sem_unlink("s2");
+   sem_close(qs);
     return rc;
 }
  

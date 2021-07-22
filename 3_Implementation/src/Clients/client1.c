@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
    MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
    MQTTClient_disconnect(client, 10000);
    sem_post(ps); 
+   sem_close(ps);
    MQTTClient_destroy(&client);
 
     return rc;

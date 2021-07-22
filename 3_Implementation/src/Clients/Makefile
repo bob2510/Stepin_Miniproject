@@ -14,3 +14,8 @@ client3:	client3.c
 
 clean: 
 	rm -rf *.txt *.o *.out client1 client2 client3
+
+mem_leak:	client1 client2 client3
+	valgrind ./client1
+	valgrind ./client2
+	valgrind ./client3	
