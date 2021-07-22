@@ -7,7 +7,7 @@ The sequencing is managed by using multi threads and named semaphores.
 
 |Status|Badge|
 |---------------|----------------|
-|Build Status|[![Build_env](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/c-cpp.yml)|
+|Build Status|[![Build_env](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/Building_env.yml/badge.svg)](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/Building_env.yml)|
 
 
 ## MQTT Requirements
