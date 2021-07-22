@@ -138,4 +138,6 @@ void onConnect(void* context, MQTTAsync_successData* response);
  */
 int make_client();
 
+void free_ptr();
+
 #endif

@@ -246,3 +246,11 @@ void* third_sub()
         }
         close(fileptr);
 }
+
+void free_ptr()
+{
+        free(TOPIC);
+        free(topic1);
+        free(topic2);
+        free(topic3);
+}
