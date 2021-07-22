@@ -12,7 +12,7 @@ int msgg_arrived = 0;
 // int noofdata = 10;  
 int fileptr;
 int terminator=0;
-char* TOPIC = (char *) malloc (10 * sizeof(char));
+const char* TOPIC = NULL;
 char* topic1 = "TEMPTEST";
 char* topic2 = "HUMID";
 char* topic3 = "MOIST";
@@ -245,12 +245,4 @@ void* third_sub()
                 make_client();
         }
         close(fileptr);
-}
-
-void free_ptr()
-{
-        free(TOPIC);
-        free(topic1);
-        free(topic2);
-        free(topic3);
 }

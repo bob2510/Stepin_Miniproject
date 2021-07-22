@@ -8,14 +8,10 @@
 
 
 int main(int argc, char* argv[])
-{       
-
-        //void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key);
-        
+{               
         first_sub();
         second_sub();
         third_sub();
-        free_ptr();
     
     return 0;
    
