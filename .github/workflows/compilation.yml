@@ -14,7 +14,7 @@ jobs:
     
     steps:
     - name: build_subscriber
-      run:  cd 3_Implementation/src/Subscriber && make
+      run:  ls
     - name: build_client
       run:  cd 3_Implementation/src/Clients && make 
       
