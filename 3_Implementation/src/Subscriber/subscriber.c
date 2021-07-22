@@ -62,7 +62,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *me
 
         AES_CTR_xcrypt_buffer(&Enc, enc_buff, message->payloadlen);
         
-        for(int i=0; i<message->payloadlen; i++)
+        for(int i=0; i < message->payloadlen; i++)
         {
             char_buf[i] = (char)enc_buff[i]; 
         } 
@@ -198,6 +198,7 @@ int make_client()
         }
  
 destroy_exit:
+        printf("here\n");
         MQTTAsync_destroy(&client);
 exit:
         return rc;
@@ -205,19 +206,17 @@ exit:
 
 void* first_sub()
 {       
-        int fptr = open("t1.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
-        fileptr=fptr;
+        fileptr = open("t1.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         while(!terminator)
         {       TOPIC=topic1;
                 make_client();
         }
-                close(fptr);
+                close(fileptr);
                 
 }
 void* second_sub()
 {       
-        int fptr = open("t2.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
-        fileptr=fptr;
+        fileptr = open("t2.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         terminator=0;
         TOPIC=topic2;
         while(!terminator)
@@ -228,14 +227,13 @@ void* second_sub()
                 msgg_arrived=0;
                 make_client();
            }    
-        close(fptr);
+        close(fileptr);
         
 }
 void* third_sub()
 {       
         
-        int fptr = open("t3.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
-        fileptr=fptr;
+        fileptr = open("t3.txt",  O_CREAT | O_WRONLY | O_APPEND, 0666);
         terminator=0;
         TOPIC = topic3;
         while(!terminator)
@@ -246,5 +244,5 @@ void* third_sub()
                 msgg_arrived=0;
                 make_client();
         }
-        close(fptr);
+        close(fileptr);
 }
