@@ -12,10 +12,10 @@ int msgg_arrived = 0;
 // int noofdata = 10;  
 int fileptr;
 int terminator=0;
-const char* TOPIC = NULL;
-const char* topic1 = "TEMPTEST";
-const char* topic2 = "HUMID";
-const char* topic3 = "MOIST";
+char* TOPIC = (char *) malloc (10 * sizeof(char));
+char* topic1 = "TEMPTEST";
+char* topic2 = "HUMID";
+char* topic3 = "MOIST";
 
 
 

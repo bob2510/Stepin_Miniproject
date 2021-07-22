@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
 
         //AES ENCRYPTION
     sem_wait(qs); 
-    sleep(5);   
-    for (int i=0;i<10;i++)
+    sleep(2);   
+    for (int i=0;i<2;i++)
     {
         uint8_t int_buf[4096];
                
