@@ -18,7 +18,7 @@
 #define CLIENTID "PC2"
 #define TOPIC "HUMID"
 #define END "END"
-#define PAYLOAD "Aadreesh:Client2"
+#define PAYLOAD "Sending dummy variables from client 2"
 #define QOS 1
 #define TIMEOUT 10000L
 
@@ -66,7 +66,12 @@ int main(int argc, char *argv[])
 
 /*--------------------------------------------AES Encryption------------------*/               
         struct AES_ctx Enc;
-        const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15, (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae, (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, (uint8_t) 0x3c };
+        const uint8_t key[16] = { (uint8_t) 0x2b, (uint8_t) 0x7e, (uint8_t) 0x15,
+                                  (uint8_t) 0x16, (uint8_t) 0x28, (uint8_t) 0xae,
+                                  (uint8_t) 0xd2, (uint8_t) 0xa6, (uint8_t) 0xab, 
+                                  (uint8_t) 0xf7, (uint8_t) 0x15, (uint8_t) 0x88, 
+                                  (uint8_t) 0x09, (uint8_t) 0xcf, (uint8_t) 0x4f, 
+                                  (uint8_t) 0x3c };
         uint8_t buf[4096] = PAYLOAD;
         strcat(buf, "\n");
         int len = strlen(PAYLOAD)+1;
@@ -74,20 +79,19 @@ int main(int argc, char *argv[])
         {
             int_buf[i] = (uint8_t)buf[i]; 
         }
-        uint8_t iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
+        uint8_t iv[16]  = { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 
+                            0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff };
 
         AES_init_ctx_iv(&Enc, key,iv);
  
         //AES_init_ctx(&Enc, key);
         AES_CTR_xcrypt_buffer(&Enc, int_buf, len);
 
-        int len = strlen(PAYLOAD)+1;
-
         pubmsg.payload  = int_buf;
         pubmsg.payloadlen = len;
         pubmsg.qos = QOS;
         pubmsg.retained = 0;
-
+/*-------------------------------------------------Sending Data----------------*/
         MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
         //rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
 

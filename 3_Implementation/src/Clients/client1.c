@@ -11,12 +11,14 @@
 #include "aes.h"
 #include <stdint.h>
 
+/*--------------------------------------------Macros---------------------------------*/
+
 #define CTR 1
 #define ADDRESS "tcp://broker.hivemq.com:1883"
 #define CLIENTID "PC1"
 #define TOPIC "TEMPTEST"
 #define END "END"
-#define PAYLOAD "Aadreesh:Client Dummy Variables"
+#define PAYLOAD "Sending dummy variables from client 1"
 #define QOS 1
 #define TIMEOUT 10000L
 
@@ -74,8 +76,9 @@ int main(int argc, char *argv[])
         pubmsg.payloadlen = strlen(PAYLOAD) + 1;
         pubmsg.qos = QOS;
         pubmsg.retained = 0;
-        printf("length: %d", strlen(PAYLOAD));
+        //printf("length: %d", strlen(PAYLOAD));
 
+/*-------------------------------------------------Sending Data----------------*/
         MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
         //rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
 
