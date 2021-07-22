@@ -4,6 +4,9 @@ This project uses MQTT for communication between client and server. The encrypti
 
 The sequencing is managed by using multi threads and named semaphores.
 
+|---------------|----------------|
+|Build Status|[![Build_env](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/bob2510/Stepin_Miniproject/actions/workflows/c-cpp.yml)|
+
 
 ## MQTT Requirements
 
