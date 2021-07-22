@@ -16,7 +16,9 @@ jobs:
     - name: build_env 
       run:  ./Build_Env.sh
     - name: build_subscriber
-      run:  cd 3_Implementation/src/Subscriber && make
+      run:  cd 3_Implementation/src/Subscriber && make 
     - name: build_client
       run:  cd 3_Implementation/src/Clients && make 
+    
+
     
