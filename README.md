@@ -28,7 +28,7 @@ The Paho C client comprises four variant libraries, shared or static:
 
 Detailed API documentation [is available online](https://www.eclipse.org/paho/files/mqttdoc/MQTTClient/html/index.html).  It is also available by building the Doxygen docs in the  ``doc`` directory. 
 
-Samples are available in the Doxygen docs and also in ``src/samples`` for reference.  These are:
+Samples are available in the Doxygen docs and also in ``src/samples`` of this [https://github.com/eclipse/paho.mqtt.c.git](repo) for reference.  These are:
 
 - paho_c_pub.c and paho_c_sub.c: command line utilities to publish and subscribe, -h will give help
 - paho_cs_pub.c paho_cs_sub.c: command line utilities using MQTTClient to publish and subscribe
